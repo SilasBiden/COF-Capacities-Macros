@@ -15,14 +15,12 @@ import registerHooks from "../../systems/cof/module/system/hooks.js";
 import { CofLootSheet } from "../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../systems/cof/module/system/active-effect-config.js";
 import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/module/effects/effects.js";
-import { CapaMacros } = "./macros/macro.js";
+import { CapaMacros } from "./macros/macros.js";
 
 
 Hooks.once("init", async function () {
     // Create a namespace within the game global
     game.cof = {
-        skin : "base",
-        capamacros : CapaMacros,
-        config: COF
+        capamacros : CapaMacros
     };
 });
