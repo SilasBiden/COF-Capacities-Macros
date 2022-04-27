@@ -1,0 +1,16 @@
+{
+    "name": "cof-capacities-with-macros",
+    "title": "COF Capacities with macros",
+    "description": "A module defining macros for each capacity",
+    "author": "Silas Biden",
+    "version": "1.0.0",
+    "system": [
+        "cof"
+      ],
+    "minimumCoreVersion": "9",
+    "compatibleCoreVersion": "9.269",
+    "scripts": [
+		"./macros/macro.js",
+		"./main.js"
+	  ]
+}
