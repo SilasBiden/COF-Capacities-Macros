@@ -3,7 +3,7 @@
     "title": "COF Capacities with macros",
     "description": "A module defining macros for each capacity",
     "author": "Silas Biden",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "system": [
         "cof"
       ],
