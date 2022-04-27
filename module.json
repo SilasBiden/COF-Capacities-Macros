@@ -12,5 +12,8 @@
     "scripts": [
 		"./macros/macro.js",
 		"./main.js"
-	  ]
+	  ],
+  "url": "https://github.com/SilasBiden/COF-Capacities-Macros",
+  "manifest": "https://github.com/SilasBiden/COF-Capacities-Macros/module.json",
+  "download": "https://github.com/SilasBiden/COF-Capacities-Macros/blob/master/COF-Capacities-Macros.zip"
 }
