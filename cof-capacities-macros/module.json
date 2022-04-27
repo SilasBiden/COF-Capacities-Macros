@@ -14,6 +14,6 @@
 		"./main.js"
 	  ],
   "url": "https://github.com/SilasBiden/COF-Capacities-Macros",
-  "manifest": "https://raw.githubusercontent.com/SilasBiden/COF-Capacities-Macros/master/module.json",
+  "manifest": "https://raw.githubusercontent.com/SilasBiden/COF-Capacities-Macros/master/cof-capacities-macros/module.json",
   "download": "https://github.com/SilasBiden/Download/raw/main/cof-capacities-macros-0.2.zip"
 }
