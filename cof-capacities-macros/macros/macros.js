@@ -16,9 +16,14 @@ import { CofLootSheet } from "../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../systems/cof/module/system/active-effect-config.js";
 import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/module/effects/effects.js";
 
-export class CapaMacros {
-
-    static convertToCapacityDescription = async function (html){ 
+    /**
+     * @name COFconvertToCapacityDescription
+     * @description
+     * 
+     * @param {*} html
+     * @returns 
+     */
+     function COFconvertToCapacityDescription (html){ 
         // Create a new div element
         let tempDivElement = document.createElement("div");
     
@@ -30,39 +35,27 @@ export class CapaMacros {
     }
     
     /**
-     * @name rollCapacityMacro
+     * @name COFCapacityDescriptionMacro
      * @description
      * 
      * @param {*} capacityname
-     * @param {*} stat 
-     * @param {*} bonus 
-     * @param {*} malus
-     * @param {*} byrank
-     * @param {*} critRange
-     * @param {*} isSuperior
-     * @param {*} difficulty
-     * @param {*} overload_flag
      * @param {*} description_flag
-     * @param {*} dialog
      * @returns 
      */
-    static rollCapacityMacro = async function(capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false, difficulty, overload_flag = true, description_flag, dialog){
-        
+    function COFCapacityDescriptionMacro (capacityname, description_flag){
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
 
-        // on récupère l'objet actor
-        const actor = game.cof.macros.getSpeakersActor();
-
-        // description_setting devra être sélectionnable depuis le module setting, alors dans les paramétres de la fonction description_flag = description_setting
+                // description_setting devra être sélectionnable depuis le module setting, alors dans les paramétres de la fonction description_flag = description_setting
         const description_setting = true;
         // si description_flag n'est pas dans les paramètres, on prend le setting général
-        if (description_flag === undefined | description_flag ==== null) description_flag = description_setting;
+        if (description_flag === undefined | description_flag === null) description_flag = description_setting;
+        // si description_flag est à la valeur false, c'est que la description n'est pas désirée ni dans les paramètres de config, nidans les paramètres de la macro
+        if (description_flag === false) return;
 
-        // pareil pour dialog : dialog_setting devra être sélectionnable depuis le module setting, alors dans les paramétres de la fonction dialog = dialog_setting
-        const dialog_setting = true;
-        if (dialog === undefined | dialog ==== null) dialog = dialog_setting;
-
+        // on récupère l'objet actor
+        const actor = game.cof.macros.getSpeakersActor();
+     
         // Several tokens selected
         if (actor === null) return;
         // Aucun acteur cible
@@ -74,7 +67,7 @@ export class CapaMacros {
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
-        let description_data = description_flag ? this.convertToCapacityDescription(capacity.data.data.description) : "";
+        let description_data = description_flag ? COFconvertToCapacityDescription(capacity.data.data.description) : "";
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
         // Affiche le message indiquant la capacité sélectionnée
@@ -83,6 +76,31 @@ export class CapaMacros {
             speaker: ChatMessage.getSpeaker({token: actor}),
             content: msg_capa
         });
+    }
+
+    /**
+     * @name COFrollCapacityMacro
+     * @description
+     * 
+     * @param {*} capacityname
+     * @param {*} stat 
+     * @param {*} bonus 
+     * @param {*} malus
+     * @param {*} byrank
+     * @param {*} critRange
+     * @param {*} isSuperior
+     * @param {*} overload_flag
+     * @param {*} dialog
+     * @param {*} difficulty
+     * @returns 
+     */
+    function COFrollCapacityMacro (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
+        
+        // si la fonction est lancée sans de nom de capacité, on ne fait rien
+        if (capacityname === undefined) return;
+
+        // on récupère l'objet actor
+        const actor = game.cof.macros.getSpeakersActor();
 
         /* Si une caractéristique est indiquée dans les paramètres 
         alors on doit faire en plus un test de compétence (pour l'instant cela ne marche 
@@ -170,4 +188,3 @@ export class CapaMacros {
             return;
         }  
     }
-}
