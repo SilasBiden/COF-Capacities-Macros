@@ -188,6 +188,7 @@ export class CapacityMacros {
             case "ranged" : statObj = eval(`actor.data.data.attacks.ranged`); break;
             case "atm" :
             case "magic" : statObj = eval(`actor.data.data.attacks.magic`); break;
+            case "DM" : return new CofDamageRoll(capacityname, bonus, false).roll(); break;
             default :
                 ui.notifications.error(game.i18n.localize("COF.notification.MacroUnknownStat")); 
                 break;
@@ -228,8 +229,6 @@ export class CapacityMacros {
                 // Sinon il faut déterminer le type de lancer
                 let type_dice = actor.isWeakened() ? "d12" : "d20"; // si joueur affaibli, on lance des d12
                 let dice = superior_flag ? "2" + type_dice + "kh" : "1" + type_dice; // si avantage, on lance 2d
-
-                console.log("dice : " + dice);
 
                 return new CofSkillRoll(capacityname, dice, "+" + mod, bonus, malus, difficulty, critRange, description_roll).roll();
             }
