@@ -143,10 +143,19 @@ export class CapacityMacros {
 
         // on récupère l'objet actor
         const actor = this.getSpeakersActor();
+     
+        // Several tokens selected
+        if (actor === null) return;
+        // Aucun acteur cible
+        if (actor === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // on récupère l'objet capacity de l'objet actor d'après son nom
         let capacity = actor.getItemByName(capacityname);
-        console.log(capacity.data.name);
+        
+        // !!! pas trouver où sont définis les notifications...
+        if (capacity === undefined) return ui.notifications.error(game.i18n.localize(actor.name + " ne maîtrise pas " + capacityname));
+        
+        console.log("capacity retrouvée : " + capacity.data.name);capacity.data.name);
 
         /* Si une caractéristique est indiquée dans les paramètres 
         alors on doit faire en plus un test de compétence (pour l'instant cela ne marche 
