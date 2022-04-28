@@ -21,6 +21,30 @@ import { EffectsModifications, customizeStatusEffects } from "../../../systems/c
 export class CapacityMacros {
 
     /**
+     * @name getSpeakersActor
+     * @description
+     * 
+     * @returns 
+     */
+    static getSpeakersActor = function(){
+        // Vérifie qu'un seul token est sélectionné
+        const tokens = canvas.tokens.controlled;
+        if (tokens.length > 1) {
+            ui.notifications.warn(game.i18n.localize('COF.notification.MacroMultipleTokensSelected'));
+        return null;
+        }
+    
+        const speaker = ChatMessage.getSpeaker();
+        let actor;
+        // Si un token est sélectionné, le prendre comme acteur cible
+        if (speaker.token) actor = game.actors.tokens[speaker.token];
+        // Sinon prendre l'acteur par défaut pour l'utilisateur courrant
+        if (!actor) actor = game.actors.get(speaker.actor);
+        return actor;
+    }
+
+
+    /**
      * @name convertToCapacityDescription
      * @description
      * 
@@ -58,7 +82,7 @@ export class CapacityMacros {
         if (description_flag === false) return;
 
         // on récupère l'objet actor
-        // const actor = game.cof.macros.getSpeakersActor();
+        const actor = this.getSpeakersActor();
      
         // Several tokens selected
         if (actor === null) return;
