@@ -15,7 +15,12 @@ import { Macros } from "../../../systems/cof/module/system/macros.js";
 import registerHooks from "../../../systems/cof/module/system/hooks.js";
 import { CofLootSheet } from "../../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active-effect-config.js";
-import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js"; */
+import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";
+
+import { CofRoll } from "../controllers/roll.js";
+import { CofHealingRoll } from "../controllers/healing-roll.js";
+import { CofSkillRoll } from "../controllers/skill-roll.js";
+import { CofDamageRoll } from "../controllers/dmg-roll.js";*/
 
 
 export class CapacityMacros {
@@ -116,7 +121,7 @@ export class CapacityMacros {
     }
 
     /**
-     * @name COFrollCapacityMacro
+     * @name rollCapacityMacro
      * @description
      * 
      * @param {*} capacityname
@@ -137,7 +142,11 @@ export class CapacityMacros {
         if (capacityname === undefined) return;
 
         // on récupère l'objet actor
-        const actor = game.cof.macros.getSpeakersActor();
+        const actor = this.getSpeakersActor();
+
+        // on récupère l'objet capacity de l'objet actor d'après son nom
+        let capacity = actor.getItemByName(capacityname);
+        console.log(capacity.data.name);
 
         /* Si une caractéristique est indiquée dans les paramètres 
         alors on doit faire en plus un test de compétence (pour l'instant cela ne marche 
