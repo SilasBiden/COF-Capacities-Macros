@@ -1,29 +1,51 @@
 // Import Modules
-import { CofActor } from "../../systems/cof/module/actors/actor.js";
-import { CofItem } from "../../systems/cof/module/items/item.js";
+import { CofActor } from "../../../systems/cof/module/actors/actor.js";
+import { CofItem } from "../../../systems/cof/module/items/item.js";
 
-import { CofItemSheet } from "../../systems/cof/module/items/item-sheet.js";
-import { CofActorSheet } from "../../systems/cof/module/actors/actor-sheet.js";
+import { CofItemSheet } from "../../../systems/cof/module/items/item-sheet.js";
+import { CofActorSheet } from "../../../systems/cof/module/actors/actor-sheet.js";
 
-import { preloadHandlebarsTemplates } from "../../systems/cof/module/system/templates.js";
-import { registerHandlebarsHelpers } from "../../systems/cof/module/system/helpers.js";
-import { registerSystemSettings } from "../../systems/cof/module/system/settings.js";
+import { preloadHandlebarsTemplates } from "../../../systems/cof/module/system/templates.js";
+import { registerHandlebarsHelpers } from "../../../systems/cof/module/system/helpers.js";
+import { registerSystemSettings } from "../../../systems/cof/module/system/settings.js";
 
-import { System, COF } from "../../systems/cof/module/system/config.js";
-import { Macros } from "../../systems/cof/module/system/macros.js";
-import registerHooks from "../../systems/cof/module/system/hooks.js";
-import { CofLootSheet } from "../../systems/cof/module/actors/loot-sheet.js";
-import { COFActiveEffectConfig } from "../../systems/cof/module/system/active-effect-config.js";
-import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/module/effects/effects.js";
+import { System, COF } from "../../../systems/cof/module/system/config.js";
+import { Macros } from "../../../systems/cof/module/system/macros.js";
+import registerHooks from "../../../systems/cof/module/system/hooks.js";
+import { CofLootSheet } from "../../../systems/cof/module/actors/loot-sheet.js";
+import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active-effect-config.js";
+import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";
 
-    /**
+
+class CofCapacityMacros {
+    constructor() {
+        let helpers = {
+            macro: (name, ...args) => {
+                const macro = game.macros.contents.find((macro) => macro.name === name);
+                if (!macro) return "";
+                const result = macro.renderContent(...args);
+                if (typeof result !== "string") return "";
+                return result;
+            },
+        };
+        Handlebars.registerHelper(helpers);
+
+        Hooks.on("init", this.init.bind(this));
+    }
+    
+    init() {
+        game.CofCapacityMacros = this;
+        //game.macros = this;
+    }
+
+      /**
      * @name COFconvertToCapacityDescription
      * @description
      * 
      * @param {*} html
      * @returns 
      */
-     function COFconvertToCapacityDescription (html){ 
+    static COFconvertToCapacityDescription = async function (html){ 
         // Create a new div element
         let tempDivElement = document.createElement("div");
     
@@ -42,7 +64,7 @@ import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/
      * @param {*} description_flag
      * @returns 
      */
-    function COFCapacityDescriptionMacro (capacityname, description_flag){
+    static COFCapacityDescriptionMacro = async function (capacityname, description_flag){
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
 
@@ -94,7 +116,7 @@ import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/
      * @param {*} difficulty
      * @returns 
      */
-    function COFrollCapacityMacro (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
+    static COFrollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
         
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
@@ -187,4 +209,8 @@ import { EffectsModifications, customizeStatusEffects } from "../../systems/cof/
         else {
             return;
         }  
-    }
+    }  
+
+}
+    
+new CofCapacityMacros();
