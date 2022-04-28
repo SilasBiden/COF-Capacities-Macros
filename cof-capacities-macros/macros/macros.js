@@ -18,35 +18,16 @@ import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active
 import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js"; */
 
 
-class CofCapacityMacros {
-    constructor() {
-        let helpers = {
-            macro: (name, ...args) => {
-                const macro = game.macros.contents.find((macro) => macro.name === name);
-                if (!macro) return "";
-                const result = macro.renderContent(...args);
-                if (typeof result !== "string") return "";
-                return result;
-            },
-        };
-        Handlebars.registerHelper(helpers);
+export class CapacityMacros {
 
-        Hooks.on("init", this.init.bind(this));
-    }
-    
-    init() {
-        game.CofCapacityMacros = this;
-        //game.macros = this;
-    }
-
-      /**
-     * @name COFconvertToCapacityDescription
+    /**
+     * @name convertToCapacityDescription
      * @description
      * 
      * @param {*} html
      * @returns 
      */
-    static COFconvertToCapacityDescription = async function (html){ 
+    static convertToCapacityDescription = async function (html){ 
         // Create a new div element
         let tempDivElement = document.createElement("div");
     
@@ -58,14 +39,14 @@ class CofCapacityMacros {
     }
     
     /**
-     * @name COFCapacityDescriptionMacro
+     * @name CapacityDescriptionMacro
      * @description
      * 
      * @param {*} capacityname
      * @param {*} description_flag
      * @returns 
      */
-    static COFCapacityDescriptionMacro = async function (capacityname, description_flag){
+    static CapacityDescriptionMacro = async function (capacityname, description_flag){
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
 
@@ -90,7 +71,7 @@ class CofCapacityMacros {
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
-        let description_data = description_flag ? this.COFconvertToCapacityDescription(capacity.data.data.description) : "";
+        let description_data = description_flag ? this.convertToCapacityDescription(capacity.data.data.description) : "";
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
         // Affiche le message indiquant la capacité sélectionnée
@@ -117,7 +98,7 @@ class CofCapacityMacros {
      * @param {*} difficulty
      * @returns 
      */
-    static COFrollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
+    static rollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
         
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
@@ -213,5 +194,4 @@ class CofCapacityMacros {
     }  
 
 }
-    
-new CofCapacityMacros();
+
