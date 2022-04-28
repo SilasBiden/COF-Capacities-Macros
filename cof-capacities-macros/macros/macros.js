@@ -1,3 +1,4 @@
+/*
 // Import Modules
 import { CofActor } from "../../../systems/cof/module/actors/actor.js";
 import { CofItem } from "../../../systems/cof/module/items/item.js";
@@ -14,7 +15,7 @@ import { Macros } from "../../../systems/cof/module/system/macros.js";
 import registerHooks from "../../../systems/cof/module/system/hooks.js";
 import { CofLootSheet } from "../../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active-effect-config.js";
-import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";
+import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js"; */
 
 
 class CofCapacityMacros {
@@ -89,7 +90,7 @@ class CofCapacityMacros {
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
-        let description_data = description_flag ? COFconvertToCapacityDescription(capacity.data.data.description) : "";
+        let description_data = description_flag ? this.COFconvertToCapacityDescription(capacity.data.data.description) : "";
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
         // Affiche le message indiquant la capacité sélectionnée
