@@ -233,7 +233,9 @@ export class CapacityMacros {
                 let type_dice = actor.isWeakened() ? "d12" : "d20"; // si joueur affaibli, on lance des d12
                 let dice = superior_flag ? "2" + type_dice + "kh" : "1" + type_dice; // si avantage, on lance 2d
 
-                return new CofSkillRoll(capacityname, dice, "+" + mod, bonus, malus, difficulty, crit, description_roll).roll();
+                console.log("dice : " + dice);
+
+                return new CofSkillRoll(capacityname, dice, "+" + mod, bonus, malus, difficulty, critRange, description_roll).roll();
             }
         }
         else {
