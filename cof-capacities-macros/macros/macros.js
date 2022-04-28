@@ -58,7 +58,7 @@ export class CapacityMacros {
         if (description_flag === false) return;
 
         // on récupère l'objet actor
-        const actor = game.cof.macros.getSpeakersActor();
+        // const actor = game.cof.macros.getSpeakersActor();
      
         // Several tokens selected
         if (actor === null) return;
