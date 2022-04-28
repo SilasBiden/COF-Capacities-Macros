@@ -91,14 +91,18 @@ export class CapacityMacros {
 
         // on récupère l'objet capacity de l'objet actor d'après son nom
         let capacity = actor.getItemByName(capacityname);
-        console.log();
+        console.log(capacity.data.name);
         // !!! pas trouver où sont définis les notifications...
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
         let description_data = description_flag ? this.convertToCapacityDescription(capacity.data.data.description) : "";
+        console.log("description flag = " + description_flag);
+        console.log("converted description" + this.convertToCapacityDescription(capacity.data.data.description));
+        console.log("description data = " + description_data);
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
+        console.log(msg_capa);
         // Affiche le message indiquant la capacité sélectionnée
         ChatMessage.create({
             user: game.user._id,
