@@ -155,7 +155,7 @@ export class CapacityMacros {
         // !!! pas trouver où sont définis les notifications...
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize(actor.name + " ne maîtrise pas " + capacityname));
         
-        console.log("capacity retrouvée : " + capacity.data.name);capacity.data.name);
+        console.log("capacity retrouvée : " + capacity.data.name);
 
         /* Si une caractéristique est indiquée dans les paramètres 
         alors on doit faire en plus un test de compétence (pour l'instant cela ne marche 
