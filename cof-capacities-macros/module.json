@@ -10,7 +10,7 @@
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9.269",
     "scripts": [
-		"./macros/macro.js",
+		"./macros/macros.js",
 		"./main.js"
 	  ],
   "url": "https://github.com/SilasBiden/COF-Capacities-Macros",
