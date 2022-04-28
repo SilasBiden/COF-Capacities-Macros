@@ -15,12 +15,12 @@ import { Macros } from "../../../systems/cof/module/system/macros.js";
 import registerHooks from "../../../systems/cof/module/system/hooks.js";
 import { CofLootSheet } from "../../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active-effect-config.js";
-import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";
+import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";*/
 
-import { CofRoll } from "../controllers/roll.js";
-import { CofHealingRoll } from "../controllers/healing-roll.js";
-import { CofSkillRoll } from "../controllers/skill-roll.js";
-import { CofDamageRoll } from "../controllers/dmg-roll.js";*/
+import { CofRoll } from "systems/cof/module/controllers/roll.js";
+import { CofHealingRoll } from "systems/cof/module/controllers/healing-roll.js";
+import { CofSkillRoll } from "systems/cof/module/controllers/skill-roll.js";
+import { CofDamageRoll } from "systems/cof/module/controllers/dmg-roll.js";*/
 
 
 export class CapacityMacros {
@@ -98,16 +98,13 @@ export class CapacityMacros {
 
         // on récupère l'objet capacity de l'objet actor d'après son nom
         let capacity = actor.getItemByName(capacityname);
-        console.log(capacity.data.name);
+
         // !!! pas trouver où sont définis les notifications...
         if (capacity === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
 
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
         let description_data = description_flag ? this.convertToCapacityDescription(capacity.data.data.description) : "";
-        console.log("description flag = " + description_flag);
-        console.log(capacity.data.data.description);
-        console.log("converted description : " + this.convertToCapacityDescription(capacity.data.data.description));
-        console.log("description data = " + description_data);
+        
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
         console.log(msg_capa);
