@@ -17,10 +17,10 @@ import { CofLootSheet } from "../../../systems/cof/module/actors/loot-sheet.js";
 import { COFActiveEffectConfig } from "../../../systems/cof/module/system/active-effect-config.js";
 import { EffectsModifications, customizeStatusEffects } from "../../../systems/cof/module/effects/effects.js";*/
 
-import { CofRoll } from "systems/cof/module/controllers/roll.js";
-import { CofHealingRoll } from "systems/cof/module/controllers/healing-roll.js";
-import { CofSkillRoll } from "systems/cof/module/controllers/skill-roll.js";
-import { CofDamageRoll } from "systems/cof/module/controllers/dmg-roll.js";
+import { CofRoll } from "../../../systems/cof/module/controllers/roll.js";
+import { CofHealingRoll } from "../../../systems/cof/module/controllers/healing-roll.js";
+import { CofSkillRoll } from "../../../systems/cof/module/controllers/skill-roll.js";
+import { CofDamageRoll } from "../../../systems/cof/module/controllers/dmg-roll.js";
 
 
 export class CapacityMacros {
