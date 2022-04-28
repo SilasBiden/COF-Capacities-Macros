@@ -155,22 +155,7 @@ export class CapacityMacros {
         qu'avec une seule stat, on pourra voir si il y a besoin de plus) */
 
         if (stat !== null && stat !== undefined){
-
-            
-            let bonusfinal = bonus; // par défaut le bonus final sera le bonus des paramètres
-            let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
-                 
-            // si le bonus est en fonction du rang
-            if (byrank){
-                let pathname = capacity.data.data.path.name; // on indentifie la voie
-                let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
-                if (rank !== undefined) bonusfinal = bonus * rank; // on calcule le bonus final
-                description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
-            }
-            
-            // on crée le message affiché lors du jet
-            let description_roll = description_rank + "Bonus de " + stat.toUpperCase() + " : +" + bonus;
-
+    
             // copier de rollStatMacro
             let statObj; // on récupère l'objet correspondant à la caractéristique
             switch(stat){
@@ -188,7 +173,23 @@ export class CapacityMacros {
             case "ranged" : statObj = eval(`actor.data.data.attacks.ranged`); break;
             case "atm" :
             case "magic" : statObj = eval(`actor.data.data.attacks.magic`); break;
-            case "DM" : return new CofDamageRoll(capacityname, bonus, false).roll(); break;
+            case "DM" :
+                let formulfinal = bonus; // par défaut, la formule des dommages est contenue dans bonus
+                let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
+                // si le bonus est en fonction du rang
+                if (byrank){
+                let pathname = capacity.data.data.path.name; // on indentifie la voie
+                let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
+                    if (rank !== undefined) {
+                        let dice2Roll = bonus.split("d")[1] * rank;
+                        console.log("dice2Roll : " + dice2Roll);
+                        let hdmax = bonus.split("d")[2];
+                        formulefinale = `${dice2Roll}d${hdmax}`; // on calcule le bonus final
+                    }
+                description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
+                } 
+                return new CofDamageRoll(capacityname, formulefinale, false, description_rank).roll();
+                break;
             default :
                 ui.notifications.error(game.i18n.localize("COF.notification.MacroUnknownStat")); 
                 break;
@@ -221,16 +222,30 @@ export class CapacityMacros {
             // Détermination si le jet est avec avantage
             let superior_flag = statObj.superior | isSuperior;
 
+            let bonusfinal = bonus; // par défaut le bonus final sera le bonus des paramètres
+            let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
+
+            // si le bonus est en fonction du rang
+            if (byrank){
+                let pathname = capacity.data.data.path.name; // on indentifie la voie
+                let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
+                if (rank !== undefined) bonusfinal = bonus * rank; // on calcule le bonus final
+                description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
+            } 
+
+            // on crée le message affiché lors du jet
+            let description_roll = description_rank + "Bonus de " + stat.toUpperCase() + " : +" + bonusfinal;
+
             // Si on désire la boîte de dialogue
             if (dialog){
-            CofRoll.skillRollDialog(actor, capacityname, mod, bonus, malus, crit, superior_flag , "submit", description_roll, actor.isWeakened());
+            CofRoll.skillRollDialog(actor, capacityname, mod, bonusfinal, malus, crit, superior_flag , "submit", description_roll, actor.isWeakened());
             }
             else{
                 // Sinon il faut déterminer le type de lancer
                 let type_dice = actor.isWeakened() ? "d12" : "d20"; // si joueur affaibli, on lance des d12
                 let dice = superior_flag ? "2" + type_dice + "kh" : "1" + type_dice; // si avantage, on lance 2d
 
-                return new CofSkillRoll(capacityname, dice, "+" + mod, bonus, malus, difficulty, critRange, description_roll).roll();
+                return new CofSkillRoll(capacityname, dice, "+" + mod, bonusfinal, malus, difficulty, critRange, description_roll).roll();
             }
         }
         else {
