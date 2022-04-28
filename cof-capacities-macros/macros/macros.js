@@ -131,7 +131,7 @@ export class CapacityMacros {
      * @param {*} difficulty
      * @returns 
      */
-    static rollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange, isSuperior = false,  overload_flag = true, dialog= false, difficulty){
+    static rollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange = "20", isSuperior = false,  overload_flag = true, dialog= false, difficulty){
         
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
@@ -174,21 +174,21 @@ export class CapacityMacros {
             case "atm" :
             case "magic" : statObj = eval(`actor.data.data.attacks.magic`); break;
             case "DM" :
-                let formulfinale = bonus; // par défaut, la formule des dommages est contenue dans bonus
+                let formula = bonus; // par défaut, la formule des dommages est contenue dans bonus
                 let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
                 // si le bonus est en fonction du rang
                 if (byrank){
                 let pathname = capacity.data.data.path.name; // on indentifie la voie
                 let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
                     if (rank !== undefined) {
-                        let dice2Roll = bonus.split("d")[1] * rank;
+                        let dice2Roll = bonus.split("d")[0] * rank;
                         console.log("dice2Roll : " + dice2Roll);
-                        let hdmax = bonus.split("d")[2];
-                        formulefinale = `${dice2Roll}d${hdmax}`; // on calcule le bonus final
+                        let hdmax = bonus.split("d")[1];
+                        formula = `${dice2Roll}d${hdmax}`; // on calcule le bonus final
                     }
                 description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
                 } 
-                return new CofDamageRoll(capacityname, formulefinale, false, description_rank).roll();
+                return new CofDamageRoll(capacityname, formula, false, description_rank).roll();
                 break;
             default :
                 ui.notifications.error(game.i18n.localize("COF.notification.MacroUnknownStat")); 
@@ -234,7 +234,7 @@ export class CapacityMacros {
             } 
 
             // on crée le message affiché lors du jet
-            let description_roll = description_rank + "Bonus de " + stat.toUpperCase() + " : +" + bonusfinal;
+            let description_roll = description_rank + "Bonus de " + stat.toUpperCase() + " supplémentaire : +" + bonusfinal;
 
             // Si on désire la boîte de dialogue
             if (dialog){
