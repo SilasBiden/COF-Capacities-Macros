@@ -51,9 +51,11 @@ export class CapacityMacros {
      * @param {*} html
      * @returns 
      */
-    static convertToCapacityDescription = async function (html){ 
+    static convertToCapacityDescription = function (html){ 
         // Create a new div element
         let tempDivElement = document.createElement("div");
+
+        console.log("html : " + html);
     
         // Set the HTML content with the given value and remove the Description word
         tempDivElement.innerHTML = html.replace('Description','');
@@ -98,7 +100,8 @@ export class CapacityMacros {
         // Si on veut afficher la description, on récupère la description stockée dans capacity et on enlève le header Description qui s'y trouve
         let description_data = description_flag ? this.convertToCapacityDescription(capacity.data.data.description) : "";
         console.log("description flag = " + description_flag);
-        console.log("converted description" + this.convertToCapacityDescription(capacity.data.data.description));
+        console.log(capacity.data.data.description);
+        console.log("converted description : " + this.convertToCapacityDescription(capacity.data.data.description));
         console.log("description data = " + description_data);
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
@@ -109,6 +112,7 @@ export class CapacityMacros {
             speaker: ChatMessage.getSpeaker({token: actor}),
             content: msg_capa
         });
+        return;
     }
 
     /**
