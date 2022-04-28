@@ -3,7 +3,7 @@
     "title": "COF Capacities with macros",
     "description": "A module defining macros for each capacity",
     "author": "Silas Biden",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "system": [
         "cof"
       ],
@@ -15,5 +15,5 @@
 	  ],
   "url": "https://github.com/SilasBiden/COF-Capacities-Macros",
   "manifest": "https://raw.githubusercontent.com/SilasBiden/COF-Capacities-Macros/master/cof-capacities-macros/module.json",
-  "download": "https://github.com/SilasBiden/COF-Capacities-Macros/raw/master/cof-capacities-macros-1.0.10.zip"
+  "download": "https://github.com/SilasBiden/COF-Capacities-Macros/raw/master/cof-capacities-macros-1.0.11.zip"
 }
