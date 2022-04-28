@@ -60,8 +60,6 @@ export class CapacityMacros {
         // Create a new div element
         let tempDivElement = document.createElement("div");
 
-        console.log("html : " + html);
-    
         // Set the HTML content with the given value and remove the Description word
         tempDivElement.innerHTML = html.replace('Description','');
     
@@ -107,7 +105,7 @@ export class CapacityMacros {
         
         // On crée le message affichant le nom de la capacité et sa description si désirée
         let msg_capa = "<h2>"+ capacityname + "</h2>" + description_data;
-        console.log(msg_capa);
+        
         // Affiche le message indiquant la capacité sélectionnée
         ChatMessage.create({
             user: game.user._id,
@@ -150,9 +148,7 @@ export class CapacityMacros {
         let capacity = actor.getItemByName(capacityname);
         
         // !!! pas trouver où sont définis les notifications...
-        if (capacity === undefined) return ui.notifications.error(game.i18n.localize(actor.name + " ne maîtrise pas " + capacityname));
-        
-        console.log("capacity retrouvée : " + capacity.data.name);
+        if (capacity === undefined) return ui.notifications.error(actor.name + " ne maîtrise pas " + capacityname);
 
         /* Si une caractéristique est indiquée dans les paramètres 
         alors on doit faire en plus un test de compétence (pour l'instant cela ne marche 
@@ -226,7 +222,7 @@ export class CapacityMacros {
 
             // Si on désire la boîte de dialogue
             if (dialog){
-            CofRoll.skillRollDialog(actor, capacityname, mod, bonus, malus, crit, superior_flag , onEnter, description_roll, actor.isWeakened());
+            CofRoll.skillRollDialog(actor, capacityname, mod, bonus, malus, crit, superior_flag , "submit", description_roll, actor.isWeakened());
             }
             else{
                 // Sinon il faut déterminer le type de lancer
