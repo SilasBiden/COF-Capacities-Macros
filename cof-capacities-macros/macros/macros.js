@@ -174,7 +174,7 @@ export class CapacityMacros {
             case "atm" :
             case "magic" : statObj = eval(`actor.data.data.attacks.magic`); break;
             case "DM" :
-                let formulfinal = bonus; // par défaut, la formule des dommages est contenue dans bonus
+                let formulfinale = bonus; // par défaut, la formule des dommages est contenue dans bonus
                 let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
                 // si le bonus est en fonction du rang
                 if (byrank){
