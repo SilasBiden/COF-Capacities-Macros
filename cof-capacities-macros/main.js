@@ -1,5 +1,6 @@
-import { CapacityMacros } from "./macros/macros.js"
+import { CapacityMacros } from "./macros.js"
 
+/*
 Hooks.once("init", async function () {
 
     // Create a namespace within the game global
@@ -7,3 +8,4 @@ Hooks.once("init", async function () {
         macros : CapacityMacros
     };
 });
+*/

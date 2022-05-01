@@ -45,6 +45,12 @@ export class CapacityMacros {
         if (speaker.token) actor = game.actors.tokens[speaker.token];
         // Sinon prendre l'acteur par défaut pour l'utilisateur courrant
         if (!actor) actor = game.actors.get(speaker.actor);
+
+        // Several tokens selected
+        if (actor === null) return;
+        // Aucun acteur cible
+        if (actor === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
+
         return actor;
     }
 
@@ -75,7 +81,7 @@ export class CapacityMacros {
      * @param {*} description_flag
      * @returns 
      */
-    static CapacityDescriptionMacro = async function (capacityname, description_flag){
+    static showDescription = async function (capacityname, description_flag){
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
         if (capacityname === undefined) return;
 
@@ -87,12 +93,7 @@ export class CapacityMacros {
         if (description_flag === false) return;
 
         // on récupère l'objet actor
-        const actor = this.getSpeakersActor();
-     
-        // Several tokens selected
-        if (actor === null) return;
-        // Aucun acteur cible
-        if (actor === undefined) return ui.notifications.error(game.i18n.localize("COF.notification.MacroNoActorAvailable"));
+        const actor = this.getSpeakersActor();  
 
         // on récupère l'objet capacity de l'objet actor d'après son nom
         let capacity = actor.getItemByName(capacityname);
@@ -116,7 +117,7 @@ export class CapacityMacros {
     }
 
     /**
-     * @name rollCapacityMacro
+     * @name rollSkill
      * @description
      * 
      * @param {*} capacityname
@@ -131,10 +132,10 @@ export class CapacityMacros {
      * @param {*} difficulty
      * @returns 
      */
-    static rollCapacityMacro = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange = "20", isSuperior = false,  overload_flag = true, dialog= false, difficulty){
+    static rollSkill = async function (capacityname, stat, bonus=0, malus=0, byrank = false, critRange = "20", isSuperior = false,  overload_flag = true, dialog= false, difficulty){
         
         // si la fonction est lancée sans de nom de capacité, on ne fait rien
-        if (capacityname === undefined) return;
+        if (capacityname === undefined) return ui.notifications.error("Pas de capacité sélectionnée");
 
         // on récupère l'objet actor
         const actor = this.getSpeakersActor();
@@ -173,23 +174,6 @@ export class CapacityMacros {
             case "ranged" : statObj = eval(`actor.data.data.attacks.ranged`); break;
             case "atm" :
             case "magic" : statObj = eval(`actor.data.data.attacks.magic`); break;
-            case "DM" :
-                let formula = bonus; // par défaut, la formule des dommages est contenue dans bonus
-                let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
-                // si le bonus est en fonction du rang
-                if (byrank){
-                let pathname = capacity.data.data.path.name; // on indentifie la voie
-                let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
-                    if (rank !== undefined) {
-                        let dice2Roll = bonus.split("d")[0] * rank;
-                        console.log("dice2Roll : " + dice2Roll);
-                        let hdmax = bonus.split("d")[1];
-                        formula = `${dice2Roll}d${hdmax}`; // on calcule le bonus final
-                    }
-                description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
-                } 
-                return new CofDamageRoll(capacityname, formula, false, description_rank).roll();
-                break;
             default :
                 ui.notifications.error(game.i18n.localize("COF.notification.MacroUnknownStat")); 
                 break;
@@ -238,7 +222,7 @@ export class CapacityMacros {
 
             // Si on désire la boîte de dialogue
             if (dialog){
-            CofRoll.skillRollDialog(actor, capacityname, mod, bonusfinal, malus, crit, superior_flag , "submit", description_roll, actor.isWeakened());
+                CofRoll.skillRollDialog(actor, capacityname, mod, bonusfinal, malus, crit, superior_flag , "submit", description_roll, actor.isWeakened());
             }
             else{
                 // Sinon il faut déterminer le type de lancer
@@ -249,9 +233,63 @@ export class CapacityMacros {
             }
         }
         else {
-            return;
+            return return ui.notifications.error("Pas de compétence sélectionnée");;
         }  
+    }
+
+    /**
+     * @name rollDM
+     * @description
+     * 
+     * @param {*} capacityname
+     * @param {*} formula 
+     * @param {*} byrank
+     * @param {*} dialog
+     * @returns 
+     */
+     static rollDM = async function (capacityname, formula, byrank = false, dialog= false){
+        
+        // si la fonction est lancée sans de nom de capacité, on ne fait rien
+        if (capacityname === undefined) return ui.notifications.error("Pas de capacité sélectionnée");
+
+        // on récupère l'objet actor
+        const actor = this.getSpeakersActor();
+ 
+        // on récupère l'objet capacity de l'objet actor d'après son nom
+        let capacity = actor.getItemByName(capacityname);
+        
+        // !!! pas trouver où sont définis les notifications...
+        if (capacity === undefined) return ui.notifications.error(actor.name + " ne maîtrise pas " + capacityname);
+
+        let description_rank = ""; //par défaut, il n'y a pas besoin d'afficher le rang dans la voie
+        // si la formule est en fonction du rang
+        if (byrank){
+            let pathname = capacity.data.data.path.name; // on indentifie la voie
+            let rank = actor.getPathRank(pathname); // on récupère le rang de cette voie
+            if (rank !== undefined) {
+                let dice2Roll = formula.split("d")[0] * rank;
+                let hdmax = formula.split("d")[1];
+                let rollformula = `${dice2Roll}d${hdmax}`; // on calcule la formule finale
+            }
+            else {return ui.notifications.error("Le rang dans la voie n'a pu être déterminé"); }
+            description_rank = "Rang dans la " + pathname + " : " + rank + "\n"; // on crée le message correspondant
+        }
+        if(dialog){
+            CofRoll.rollDamageDialog(actor, label, rollformula, dmgBonus = 0, critical = false, onEnter = "submit", description_rank);
+        }
+        else{
+           return new CofDamageRoll(capacityname, rollformula, false, description_rank).roll();  
+        }
+           
     }  
+
 
 }
 
+Hooks.once("init", async function () {
+
+    // Create a namespace within the game global
+    game.cofcapacity = {
+        macros : this
+    };
+});
